@@ -1,12 +1,19 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
-// import VueRouter from 'vue-router
+// import Vuex from 'vuex'
+import VueRouter from 'vue-router'
 
-Vue.use(Vuex)
+Vue.use(VueRouter)
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
+// 路由表配置、
+const routes = [
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login')
+  }
+]
+
+const router = new VueRouter({
+  routes
 })
+export default router
