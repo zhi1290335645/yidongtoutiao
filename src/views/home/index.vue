@@ -37,7 +37,9 @@
       round
       closeable
       close-icon-position="top-left"
-    />
+    >
+        <channel-edit :user-channels="userChannels" />
+      </van-popup>
     <!-- /编辑频道 -->
   </div>
 </template>
@@ -45,10 +47,12 @@
 <script>
 import { getUserChannels } from '@/api/api/channel'
 import ArticleList from './components/article-list'
+import ChannelEdit from './components/channel-edit'
 export default {
   name: 'HomePage',
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
   },
   props: {},
   data () {
