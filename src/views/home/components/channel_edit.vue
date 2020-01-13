@@ -17,6 +17,21 @@
         :text="channel.name"
         @click="onUserChannelClick(index)"
         >
+         <!--
+          :class="{
+            active: index === active
+          }"
+          样式绑定。
+          属性名：CSS 类名
+          属性值：一个布尔值
+         -->
+        <span
+          slot="text"
+          class="text"
+          :class="{
+            active: index === active
+          }"
+        >{{ channel.name }}</span>
         <van-icon v-show="isEditShow && index !== 0" slot="icon" name="close" />
       </van-grid-item>
     </van-grid>
@@ -44,6 +59,10 @@ export default {
     userChannels: {
       type: Array,
       required: true
+    },
+    active: {
+      type: Number,
+      required: true
     }
   },
   data () {
@@ -55,13 +74,12 @@ export default {
   computed: {
     remainingChannels () {
       const channels = []
-      const { allChannels, userChannels } = this
-      allChannels.forEach(item => {
+      this.allChannels.forEach(item => {
         // 当前的遍历项是否属于我的频道，如果不是，那就收集到 channels
         // userChannels 是否包含 item
         // find 会遍历数组，它会对每个元素执行 c.id === item.id 条件判定
         // 如果 true，则返回该元素，如果直到遍历结束都没有符合条件的元素，则返回 undefined
-        if (!userChannels.find(c => c.id === item.id)) {
+        if (!this.userChannels.find(c => c.id === item.id)) {
           channels.push(item)
         }
       })
@@ -85,8 +103,10 @@ export default {
       // 如果是编辑状态，则执行删除操作
       if (this.isEditShow && index !== 0) {
         this.userChannels.splice(index, 1) // 从索引处开始(包括索引本身)，删除指定的个数
+      } else {
+        // 如果是非编辑状态，则执行切换频道操作
+        this.$emit('switch', index)
       }
-      // 如果是非编辑状态，则执行切换频道操作
     }
   }
 }
@@ -114,9 +134,12 @@ export default {
     .van-grid-item__content {
       background: #f4f5f6;
     }
-    .van-grid-item__text {
+    .van-grid-item__text, .text {
       font-size: 14px;
       color: #222;
+    }
+    .active {
+      color: red;
     }
   }
 }
